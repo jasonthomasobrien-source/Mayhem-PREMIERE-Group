@@ -22,7 +22,7 @@ export function BadgePill({ type, value, icon }: BadgePillProps) {
   }
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-semibold ${styles[type]}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${styles[type]}`}>
       {icon && <span>{icon}</span>}
       {type === 'streak' && value ? (
         <>

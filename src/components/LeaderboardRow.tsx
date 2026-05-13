@@ -2,7 +2,6 @@
 
 import { LeaderboardRow as LeaderboardRowType } from '@/lib/types'
 import { BadgePill } from './BadgePill'
-import { ConversionPill } from './ConversionPill'
 
 interface LeaderboardRowProps {
   row: LeaderboardRowType
@@ -32,7 +31,7 @@ export function LeaderboardRow({
 
   return (
     <div
-      className={`bg-brand-surface rounded-lg p-4 transition-all ${
+      className={`bg-brand-surface rounded-lg p-4 shadow-sm transition-all ${
         row.rank === 1 ? 'border-l-4 border-l-brand-gold' : ''
       }`}
     >
@@ -52,7 +51,7 @@ export function LeaderboardRow({
       {/* Stats: Attempts · Leads · Conversion % */}
       <div className="text-sm text-brand-muted mb-3">
         {attempts} attempts · {leads} leads ·{' '}
-        <span className={conversionPercent >= '10.0' ? 'text-brand-success' : ''}>
+        <span className={parseFloat(conversionPercent) >= 10 ? 'text-brand-success' : ''}>
           {conversionPercent}%
         </span>
       </div>

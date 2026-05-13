@@ -67,8 +67,8 @@ export function RecentActivity() {
   }
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-semibold text-white mb-4">Recent activity</h3>
+    <div className="space-y-4">
+      <h3 className="text-xs font-semibold text-brand-muted tracking-widest uppercase">Recent activity</h3>
       <div className="space-y-2 max-h-64 overflow-y-auto">
         {activities.map((activity) => {
           const agent = agents[activity.agent_id]

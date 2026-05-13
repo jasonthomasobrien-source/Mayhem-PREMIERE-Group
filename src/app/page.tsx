@@ -4,7 +4,6 @@ import { useEffect, useState, Suspense } from 'react'
 import { BrandHeader } from '@/components/BrandHeader'
 import { LogActivityModal } from '@/components/LogActivityModal'
 import { RecentActivity } from '@/components/RecentActivity'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -89,30 +88,33 @@ export default function Home() {
 
       <main className="max-w-2xl mx-auto px-4 py-6 sm:py-8">
         <div className="space-y-6">
-          {/* Agent Selector */}
-          <div>
-            <label className="text-sm font-medium text-brand-muted block mb-2">
-              Who&apos;s logging?
-            </label>
-            <Select value={selectedAgentId} onValueChange={handleAgentChange}>
-              {selectedAgentId === '' && <SelectItem value="">Select an agent</SelectItem>}
-              {agents.map((agent) => (
-                <SelectItem key={agent.id} value={agent.id}>
-                  {agent.emoji} {agent.name}
-                </SelectItem>
-              ))}
-            </Select>
-          </div>
+          {/* Card: Agent Selector + Log Activity */}
+          <div className="bg-brand-surface rounded-xl p-6 shadow-sm border border-brand-muted/10">
+            {/* Agent Selector */}
+            <div className="mb-4">
+              <label className="text-sm font-medium text-brand-muted block mb-2">
+                Who&apos;s logging?
+              </label>
+              <Select value={selectedAgentId} onValueChange={handleAgentChange}>
+                {selectedAgentId === '' && <SelectItem value="">Select an agent</SelectItem>}
+                {agents.map((agent) => (
+                  <SelectItem key={agent.id} value={agent.id}>
+                    {agent.emoji} {agent.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
 
-          {/* Log Activity Button */}
-          {selectedAgent && (
-            <Button
-              onClick={() => setDialogOpen(true)}
-              className="w-full bg-brand-gold-bright text-brand-black hover:bg-brand-gold font-semibold py-6 text-base"
-            >
-              Log Activity
-            </Button>
-          )}
+            {/* Log Activity Button */}
+            {selectedAgent && (
+              <button
+                onClick={() => setDialogOpen(true)}
+                className="w-full bg-brand-gold-bright hover:bg-brand-gold text-brand-black font-bold py-4 px-6 rounded-lg text-base transition-colors"
+              >
+                Log Activity
+              </button>
+            )}
+          </div>
 
           {/* Modal */}
           {selectedAgent && (
