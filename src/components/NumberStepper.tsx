@@ -1,75 +1,74 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Minus, Plus } from 'lucide-react'
 
 interface NumberStepperProps {
   value: number
   onChange: (value: number) => void
   min?: number
   max?: number
-  step?: number
   label?: string
+  disabled?: boolean
 }
 
 export function NumberStepper({
   value,
   onChange,
   min = 0,
-  max = 999,
-  step = 1,
+  max = 200,
   label,
+  disabled = false,
 }: NumberStepperProps) {
-  const handleDecrement = () => {
-    const newValue = Math.max(min, value - step)
+  const decrement = () => {
+    const newValue = Math.max(min, value - 1)
     onChange(newValue)
   }
 
-  const handleIncrement = () => {
-    const newValue = Math.min(max, value + step)
+  const increment = () => {
+    const newValue = Math.min(max, value + 1)
     onChange(newValue)
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const numValue = parseInt(e.target.value, 10)
-    if (!isNaN(numValue)) {
-      const clamped = Math.min(max, Math.max(min, numValue))
-      onChange(clamped)
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value
+    if (input === '') {
+      onChange(min)
+      return
+    }
+    const num = parseInt(input, 10)
+    if (!isNaN(num)) {
+      onChange(Math.max(min, Math.min(max, num)))
     }
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      {label && <label className="text-sm font-medium text-white">{label}</label>}
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleDecrement}
-          disabled={value <= min}
-          className="h-8 w-8"
-        >
-          <Minus className="h-4 w-4" />
-        </Button>
-        <Input
-          type="number"
-          value={value}
-          onChange={handleInputChange}
-          min={min}
-          max={max}
-          className="w-16 text-center"
-        />
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleIncrement}
-          disabled={value >= max}
-          className="h-8 w-8"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
-      </div>
+    <div className="flex items-center gap-3">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={decrement}
+        disabled={disabled || value <= min}
+        className="h-9 w-9 p-0 border-brand-gold text-brand-gold hover:bg-brand-surface"
+      >
+        −
+      </Button>
+      <Input
+        type="number"
+        value={value}
+        onChange={handleInput}
+        disabled={disabled}
+        min={min}
+        max={max}
+        className="h-9 w-16 text-center border-brand-muted/30 bg-brand-surface text-white"
+      />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={increment}
+        disabled={disabled || value >= max}
+        className="h-9 w-9 p-0 border-brand-gold text-brand-gold hover:bg-brand-surface"
+      >
+        +
+      </Button>
     </div>
   )
 }
