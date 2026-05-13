@@ -1,31 +1,31 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
-
 interface DateModeToggleProps {
-  mode: 'single' | 'range'
-  onChange: (mode: 'single' | 'range') => void
+  mode: 'today' | 'range'
+  onChange: (mode: 'today' | 'range') => void
 }
 
 export function DateModeToggle({ mode, onChange }: DateModeToggleProps) {
   return (
-    <div className="flex gap-2 rounded-md border border-brand-muted p-1 bg-brand-surface/50">
-      <Button
-        variant={mode === 'single' ? 'default' : 'ghost'}
-        size="sm"
-        onClick={() => onChange('single')}
-        className="flex-1"
+    <div className="flex gap-2 rounded-lg bg-brand-surface p-1">
+      <button
+        onClick={() => onChange('today')}
+        className={`flex-1 rounded px-4 py-2 font-semibold text-sm transition-colors ${
+          mode === 'today'
+            ? 'bg-brand-gold-bright text-brand-black'
+            : 'bg-transparent text-brand-muted hover:text-white'
+        }`}
       >
-        Single day
-      </Button>
-      <Button
-        variant={mode === 'range' ? 'default' : 'ghost'}
-        size="sm"
+        Log Today's Activity
+      </button>
+      <button
         onClick={() => onChange('range')}
-        className="flex-1"
+        className={`flex-1 rounded px-4 py-2 font-semibold text-sm transition-colors ${
+          mode === 'range'
+            ? 'bg-brand-gold-bright text-brand-black'
+            : 'bg-transparent text-brand-muted hover:text-white'
+        }`}
       >
-        Date range
-      </Button>
+        Log for a Range
+      </button>
     </div>
   )
 }
