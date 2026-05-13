@@ -2,7 +2,7 @@
 
 import { OutreachRow } from '@/lib/types'
 import { getWeekBounds, dateToISO, formatConversion } from '@/lib/dates'
-import { sumByDateRange, computeStreak } from '@/lib/aggregates'
+import { sumByDateRange } from '@/lib/aggregates'
 
 interface WeekBreakdownTableProps {
   agentId: string
@@ -21,7 +21,7 @@ export function WeekBreakdownTable({ agentId, rows }: WeekBreakdownTableProps) {
       dateToISO(end)
     )
 
-    // Check if this week had a streak
+    // Check if this week had any activity with >= 5 attempts on a single day
     const weekRows = rows.filter(
       (r) =>
         r.agent_id === agentId &&
@@ -29,19 +29,15 @@ export function WeekBreakdownTable({ agentId, rows }: WeekBreakdownTableProps) {
         r.activity_date <= dateToISO(end)
     )
 
-    // Simple streak check for the week
-    const streak =
-      weekRows.length > 0 &&
-      weekRows.some((r) => r.attempts >= 5)
-        ? 1
-        : 0
+    // Simple streak check for the week - show 🔥 if any day had >= 5 attempts
+    const hasStreak = weekRows.some((r) => r.attempts >= 5)
 
     return {
       weekNum,
       attempts,
       leads,
       conversion: formatConversion(attempts, leads),
-      streak,
+      hasStreak,
     }
   })
 
@@ -76,7 +72,7 @@ export function WeekBreakdownTable({ agentId, rows }: WeekBreakdownTableProps) {
                   {week.conversion}%
                 </td>
                 <td className="text-center py-3">
-                  {week.streak > 0 ? (
+                  {week.hasStreak ? (
                     <span className="text-lg">🔥</span>
                   ) : (
                     <span className="text-brand-muted">-</span>
