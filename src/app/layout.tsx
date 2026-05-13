@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Poppins, Geist } from 'next/font/google'
 import '../styles/globals.css'
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { Navigation } from '@/components/Navigation'
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body className={`${poppins.variable} font-sans bg-brand-black text-white`}>
+        <Navigation />
         {children}
       </body>
     </html>
