@@ -1,13 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchAgents, fetchOutreach } from '@/lib/queries'
+import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { subscribeToOutreach } from '@/lib/realtime'
 import { buildLeaderboard } from '@/lib/aggregates'
 import { Agent, OutreachRow, LeaderboardRow as LeaderboardRowType } from '@/lib/types'
 import { LoadingSpinner } from './LoadingSpinner'
 import { LeaderboardRow } from './LeaderboardRow'
 import { Button } from './ui/button'
+import { getStreak, isOnPace, getTopAgentForPeriod, getConversionKing } from '@/lib/badge-logic'
 
 export function LeaderboardTabs() {
   const [agents, setAgents] = useState<Agent[]>([])
@@ -90,13 +91,23 @@ export function LeaderboardTabs() {
             No activity yet. Keep pushing!
           </p>
         ) : (
-          leaderboard.map((row) => (
-            <LeaderboardRow
-              key={row.agent.id}
-              row={row}
-              isMVP={activeTab === 'today' && row.rank === 1}
-            />
-          ))
+          leaderboard.map((row) => {
+            const streak = getStreak(rows, row.agent.id)
+            const onPace = isOnPace(rows, row.agent.id, activeTab)
+            const topAgent = getTopAgentForPeriod(rows, agents, activeTab)
+            const conversionKing = getConversionKing(rows, agents, activeTab)
+
+            return (
+              <LeaderboardRow
+                key={row.agent.id}
+                row={row}
+                streak={streak}
+                onPace={onPace}
+                isMVP={activeTab === 'today' && topAgent?.id === row.agent.id}
+                isConversionKing={conversionKing?.id === row.agent.id}
+              />
+            )
+          })
         )}
       </div>
     </div>
