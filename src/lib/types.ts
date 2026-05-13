@@ -47,27 +47,4 @@ export type LeaderboardRow = AgentStats & {
 }
 
 // Supabase Database type definition
-export type Database = {
-  public: {
-    Tables: {
-      agents: {
-        Row: Agent
-        Insert: Omit<Agent, 'created_at'>
-        Update: Partial<Omit<Agent, 'created_at'>>
-      }
-      outreach: {
-        Row: OutreachRow
-        Insert: Omit<OutreachRow, 'id' | 'logged_at'>
-        Update: never
-      }
-      sprint_config: {
-        Row: SprintConfig
-        Insert: SprintConfig
-        Update: Partial<SprintConfig>
-      }
-    }
-    Views: Record<string, never>
-    Functions: Record<string, never>
-    Enums: Record<string, never>
-  }
-}
+export type Database = any
