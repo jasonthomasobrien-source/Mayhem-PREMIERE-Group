@@ -1,15 +1,24 @@
 'use client'
 
 import { LeaderboardRow as LeaderboardRowType } from '@/lib/types'
+import { BadgePill } from './BadgePill'
 import { ConversionPill } from './ConversionPill'
-import { StreakBadge } from './StreakBadge'
 
 interface LeaderboardRowProps {
   row: LeaderboardRowType
   isMVP?: boolean
+  isConversionKing?: boolean
+  streak: number
+  onPace: boolean
 }
 
-export function LeaderboardRow({ row, isMVP = false }: LeaderboardRowProps) {
+export function LeaderboardRow({
+  row,
+  isMVP = false,
+  isConversionKing = false,
+  streak,
+  onPace,
+}: LeaderboardRowProps) {
   // Determine which attempts/leads to show based on context
   const attempts = row.todayAttempts > 0 ? row.todayAttempts :
                    row.weekAttempts > 0 ? row.weekAttempts :
@@ -19,41 +28,40 @@ export function LeaderboardRow({ row, isMVP = false }: LeaderboardRowProps) {
                 row.weekLeads > 0 ? row.weekLeads :
                 row.sprintLeads
 
+  const conversionPercent = attempts > 0 ? ((leads / attempts) * 100).toFixed(1) : '0.0'
+
   return (
-    <div className="flex items-center justify-between gap-4 p-4 rounded-lg bg-brand-surface border border-brand-muted/20 hover:border-brand-gold/50 transition-colors">
-      {/* Rank and Agent */}
-      <div className="flex items-center gap-3 min-w-0 flex-1">
-        <div className="text-lg font-bold text-brand-gold min-w-[28px]">
-          #{row.rank}
+    <div
+      className={`bg-brand-surface rounded-lg p-4 transition-all ${
+        row.rank === 1 ? 'border-l-4 border-l-brand-gold' : ''
+      }`}
+    >
+      {/* Header: Rank + Name + Streak */}
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <span className={`font-bold ${row.rank === 1 ? 'text-brand-gold' : 'text-brand-muted'}`}>
+            #{row.rank}
+          </span>
+          <span className="font-semibold">
+            {row.agent.emoji || '👤'} {row.agent.name}
+          </span>
         </div>
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-xl flex-shrink-0">{row.agent.emoji || '👤'}</span>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-white truncate">
-              {row.agent.name}
-            </p>
-            {isMVP && (
-              <p className="text-xs text-brand-gold font-semibold">TODAY'S MVP</p>
-            )}
-          </div>
-        </div>
+        {streak > 0 && <BadgePill type="streak" value={streak} />}
       </div>
 
-      {/* Stats */}
-      <div className="flex items-center gap-4 flex-shrink-0">
-        <div className="text-right">
-          <p className="text-sm font-bold text-white">{attempts}</p>
-          <p className="text-xs text-brand-muted">outreach</p>
-        </div>
+      {/* Stats: Attempts · Leads · Conversion % */}
+      <div className="text-sm text-brand-muted mb-3">
+        {attempts} attempts · {leads} leads ·{' '}
+        <span className={conversionPercent >= '10.0' ? 'text-brand-success' : ''}>
+          {conversionPercent}%
+        </span>
+      </div>
 
-        <div className="text-right">
-          <p className="text-sm font-bold text-white">{leads}</p>
-          <p className="text-xs text-brand-muted">leads</p>
-        </div>
-
-        <ConversionPill attempts={attempts} leads={leads} />
-
-        {row.streak > 0 && <StreakBadge streak={row.streak} />}
+      {/* Badges: On pace, MVP, Conversion King */}
+      <div className="flex gap-2 flex-wrap">
+        {onPace && <BadgePill type="on-pace" />}
+        {isMVP && <BadgePill type="mvp" />}
+        {isConversionKing && <BadgePill type="conversion" />}
       </div>
     </div>
   )
