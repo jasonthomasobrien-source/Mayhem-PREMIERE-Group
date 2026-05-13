@@ -1,11 +1,8 @@
 'use client'
 
 import { useEffect, useState, Suspense } from 'react'
-
-export const dynamic = 'force-dynamic'
 import { BrandHeader } from '@/components/BrandHeader'
-import { QuickLogButtons } from '@/components/QuickLogButtons'
-import { LogOutreachDialog } from '@/components/LogOutreachDialog'
+import { LogActivityModal } from '@/components/LogActivityModal'
 import { RecentActivity } from '@/components/RecentActivity'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,9 +10,11 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select'
-import { fetchAgents, fetchOutreach } from '@/lib/queries'
+import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { computeTeamTotals } from '@/lib/aggregates'
 import { Agent, OutreachRow } from '@/lib/types'
+
+export const dynamic = 'force-dynamic'
 
 const AGENT_STORAGE_KEY = 'mayhem-selected-agent'
 
@@ -105,30 +104,19 @@ export default function Home() {
             </Select>
           </div>
 
-          {/* Quick Log Buttons */}
+          {/* Log Activity Button */}
           {selectedAgent && (
-            <QuickLogButtons
-              agentId={selectedAgent.id}
-              agentName={selectedAgent.name}
-              agentEmoji={selectedAgent.emoji}
-            />
+            <Button
+              onClick={() => setDialogOpen(true)}
+              className="w-full bg-brand-gold-bright text-brand-black hover:bg-brand-gold font-semibold py-6 text-base"
+            >
+              Log Activity
+            </Button>
           )}
 
-          {/* Full Log Dialog Trigger */}
-          <Button
-            onClick={() => setDialogOpen(true)}
-            variant="secondary"
-            className="w-full"
-          >
-            Log outreach…
-          </Button>
-          <p className="text-xs text-brand-muted text-center">
-            (different date, leads, or notes)
-          </p>
-
-          {/* Dialog */}
+          {/* Modal */}
           {selectedAgent && (
-            <LogOutreachDialog
+            <LogActivityModal
               open={dialogOpen}
               onOpenChange={setDialogOpen}
               agentId={selectedAgent.id}
@@ -145,6 +133,16 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Discrete Footer */}
+      <footer className="text-center py-4 mt-12 border-t border-brand-muted/10">
+        <a
+          href="/admin"
+          className="text-xs text-brand-muted/40 hover:text-brand-muted/60 transition-colors"
+        >
+          admin
+        </a>
+      </footer>
     </div>
   )
 }
