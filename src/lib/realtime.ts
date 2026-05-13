@@ -13,7 +13,7 @@ export function subscribeToOutreach(
         schema: 'public',
         table: 'outreach',
       },
-      (payload) => {
+      (payload: any) => {
         onInsert(payload.new as OutreachRow)
       }
     )
