@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { subscribeToOutreach } from '@/lib/realtime'
-import { fetchOutreach, fetchAgents } from '@/lib/queries'
+import { fetchOutreach, fetchAgents } from '@/lib/client-queries'
 import { OutreachRow, Agent } from '@/lib/types'
 
 export function RecentActivity() {

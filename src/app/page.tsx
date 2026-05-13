@@ -121,7 +121,7 @@ export default function Home() {
               onOpenChange={setDialogOpen}
               agentId={selectedAgent.id}
               agentName={selectedAgent.name}
-              agentEmoji={selectedAgent.emoji}
+              agentEmoji={selectedAgent.emoji || '👤'}
             />
           )}
 

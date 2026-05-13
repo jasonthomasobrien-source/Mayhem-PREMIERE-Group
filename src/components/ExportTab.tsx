@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { OutreachRow, Agent } from '@/lib/types'
-import { fetchAllOutreachAdmin, fetchAgents } from '@/lib/queries'
+import { fetchAllOutreachAdmin, fetchAgents } from '@/lib/client-queries'
 import { Button } from './ui/button'
 import { LoadingSpinner } from './LoadingSpinner'
 import { toast } from '@/lib/toast'

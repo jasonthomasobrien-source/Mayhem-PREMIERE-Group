@@ -1,11 +1,14 @@
-import { supabase } from './supabase/client'
+import { getSupabase } from './supabase/client'
 import { OutreachRow } from './types'
 
 export function subscribeToOutreach(
   onInsert: (row: OutreachRow) => void
 ): () => void {
+  const supabase = getSupabase()
+  const channelName = `outreach-feed-${Math.random()}`
+
   const channel = supabase
-    .channel('outreach-feed')
+    .channel(channelName)
     .on(
       'postgres_changes',
       {
@@ -19,7 +22,6 @@ export function subscribeToOutreach(
     )
     .subscribe()
 
-  // Return unsubscribe function
   return () => {
     supabase.removeChannel(channel)
   }

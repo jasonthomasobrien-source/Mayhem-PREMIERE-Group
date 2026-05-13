@@ -6,7 +6,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { WeeklyHeatmap } from '@/components/WeeklyHeatmap'
 import { WeekBreakdownTable } from '@/components/WeekBreakdownTable'
 import { PersonalStats } from '@/components/PersonalStats'
-import { fetchAgents, fetchOutreachByAgent } from '@/lib/queries'
+import { fetchAgents, fetchOutreachByAgent } from '@/lib/client-queries'
 import { subscribeToOutreach } from '@/lib/realtime'
 import { Agent, OutreachRow } from '@/lib/types'
 

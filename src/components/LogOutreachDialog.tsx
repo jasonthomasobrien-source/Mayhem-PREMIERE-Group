@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { insertOutreach } from '@/lib/queries'
+import { insertOutreach } from '@/lib/client-queries'
 import {
   todayDetroit,
   dateToISO,
@@ -43,7 +43,7 @@ export function LogOutreachDialog({
   agentEmoji,
 }: LogOutreachDialogProps) {
   const { toast } = useToast()
-  const [mode, setMode] = useState<'single' | 'range'>('single')
+  const [mode, setMode] = useState<'today' | 'range'>('today')
   const [singleDate, setSingleDate] = useState<Date>(todayDetroit())
   const [rangeStart, setRangeStart] = useState<Date>(todayDetroit())
   const [rangeEnd, setRangeEnd] = useState<Date>(todayDetroit())
@@ -55,7 +55,7 @@ export function LogOutreachDialog({
   const [datePickerMode, setDatePickerMode] = useState<'single' | 'start' | 'end'>('single')
 
   const getSelectedDates = () => {
-    if (mode === 'single') {
+    if (mode === 'today') {
       return [singleDate]
     }
     try {
@@ -74,7 +74,7 @@ export function LogOutreachDialog({
   const totalLeads = leads * dayCount
 
   const validateForm = (): string | null => {
-    const dates = mode === 'single' ? [singleDate] : [rangeStart, rangeEnd]
+    const dates = mode === 'today' ? [singleDate] : [rangeStart, rangeEnd]
 
     for (const date of dates) {
       if (!isWithinSprintWindow(date)) {
@@ -121,7 +121,7 @@ export function LogOutreachDialog({
 
       if (result && result.length > 0) {
         const dateRange =
-          mode === 'single'
+          mode === 'today'
             ? formatDate(singleDate)
             : `${formatDate(rangeStart)}–${formatDate(rangeEnd)}`
 
@@ -132,7 +132,7 @@ export function LogOutreachDialog({
         })
 
         // Reset form
-        setMode('single')
+        setMode('today')
         setSingleDate(todayDetroit())
         setRangeStart(todayDetroit())
         setRangeEnd(todayDetroit())
@@ -189,7 +189,7 @@ export function LogOutreachDialog({
           </div>
 
           {/* Date picker - single mode */}
-          {mode === 'single' && (
+          {mode === 'today' && (
             <div>
               <label className="text-sm font-medium text-white block mb-2">
                 Date

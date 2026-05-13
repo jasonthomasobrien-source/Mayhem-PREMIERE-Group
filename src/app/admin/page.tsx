@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { PINGate } from '@/components/PINGate'
 import { AgentManagementTab } from '@/components/AgentManagementTab'
 import { LogCorrectionTab } from '@/components/LogCorrectionTab'
@@ -24,11 +26,20 @@ export default function AdminPage() {
       <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <div className="space-y-6">
           {/* Header */}
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
-            <p className="text-sm text-brand-muted">
-              Manage agents, correct logs, and export data
-            </p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
+              <p className="text-sm text-brand-muted">
+                Manage agents, correct logs, and export data
+              </p>
+            </div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-brand-gold hover:text-brand-gold-bright transition-colors"
+            >
+              <ArrowLeft size={18} />
+              Back to Dashboard
+            </Link>
           </div>
 
           {/* Tabs */}

@@ -1,0 +1,54 @@
+<h2>Logging Flow & Quick Buttons</h2>
+<p class="subtitle">Two questions: (1) Do you want the quick-tap buttons at all? (2) If yes, what numbers/labels feel right?</p>
+
+<div class="options">
+  <div class="option" data-choice="no-quick-buttons" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>No Quick Buttons</h3>
+      <p>Single "Log Activity" button opens the modal. Users choose single-day or range, enter amounts. Minimal, clean.</p>
+      <ul style="margin-top: 10px; font-size: 0.9em;">
+        <li>Simplest interface</li>
+        <li>All logging flows through one dialog</li>
+        <li>No decision paralysis on home page</li>
+        <li>Feels more intentional</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="option" data-choice="quick-5-only" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Single Quick Button: +5</h3>
+      <p>"Log Activity" button + one quick tap for "Log 5 outreach today" (the daily goal). Everything else via modal.</p>
+      <ul style="margin-top: 10px; font-size: 0.9em;">
+        <li>Balances speed + simplicity</li>
+        <li>5 is the daily target, so it's natural</li>
+        <li>Covers 80% of quick logs</li>
+        <li>No clutter</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="option" data-choice="quick-custom" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Custom Quick Buttons</h3>
+      <p>Suggest which numbers resonate: +3, +5, +10? Or something else entirely (e.g., +5, +15, +25 for weekly chunks)?</p>
+      <ul style="margin-top: 10px; font-size: 0.9em;">
+        <li>Speed for common cases</li>
+        <li>Lets us find the right numbers</li>
+        <li>More flexible than just +5</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 30px; padding: 16px; background: rgba(212, 175, 84, 0.05); border-left: 3px solid #D4AF54; border-radius: 4px;">
+  <p style="margin: 0; font-size: 14px; color: #aaa;"><strong>Note:</strong> The modal will work like this:</p>
+  <ul style="margin-top: 8px; font-size: 13px; color: #aaa;">
+    <li><strong>Log Today's Activity:</strong> Pick today's date (pre-filled), enter attempts + leads, submit</li>
+    <li><strong>Log for a Range:</strong> Pick start date + end date, enter total attempts + leads for that span, submit</li>
+    <li>No per-day math needed in range mode — just total across the range</li>
+  </ul>
+</div>

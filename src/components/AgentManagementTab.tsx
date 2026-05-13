@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Agent } from '@/lib/types'
-import { fetchAgentsAdmin, createAgent, deleteAgent } from '@/lib/queries'
+import { fetchAgentsAdmin, createAgent, deleteAgent } from '@/lib/client-queries'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { LoadingSpinner } from './LoadingSpinner'
@@ -11,10 +11,15 @@ import { toast } from '@/lib/toast'
 export function AgentManagementTab() {
   const [agents, setAgents] = useState<Agent[]>([])
   const [loading, setLoading] = useState(true)
-  const [newId, setNewId] = useState('')
-  const [newName, setNewName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
   const [newEmoji, setNewEmoji] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
+  const generateSlug = (first: string, last: string) => {
+    return `${first.toLowerCase()}-${last.toLowerCase()}`.replace(/\s+/g, '-')
+  }
 
   // Load agents
   useEffect(() => {
@@ -34,24 +39,28 @@ export function AgentManagementTab() {
 
   const handleAddAgent = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newId || !newName) {
+    if (!firstName || !lastName || !email) {
       toast('Please fill in all fields', 'error')
       return
     }
 
     setSubmitting(true)
     try {
+      const slug = generateSlug(firstName, lastName)
+      const fullName = `${firstName} ${lastName}`
+
       const agent = await createAgent({
-        id: newId,
-        name: newName,
+        id: slug,
+        name: fullName,
         emoji: newEmoji || null,
         active: true,
       })
 
       if (agent) {
         setAgents([...agents, agent])
-        setNewId('')
-        setNewName('')
+        setFirstName('')
+        setLastName('')
+        setEmail('')
         setNewEmoji('')
         toast('Agent added successfully', 'success')
       } else {
@@ -98,17 +107,24 @@ export function AgentManagementTab() {
       <div className="bg-brand-surface rounded-lg p-6 border border-brand-muted/20">
         <h3 className="text-lg font-semibold text-white mb-4">Add new agent</h3>
         <form onSubmit={handleAddAgent} className="space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <Input
-              placeholder="Agent ID (slug)"
-              value={newId}
-              onChange={(e) => setNewId(e.target.value)}
+              placeholder="First name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               disabled={submitting}
             />
             <Input
-              placeholder="Name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={submitting}
+            />
+            <Input
+              placeholder="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={submitting}
             />
             <Input

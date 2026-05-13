@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchOutreach } from '@/lib/queries'
+import { fetchOutreach } from '@/lib/client-queries'
 import { subscribeToOutreach } from '@/lib/realtime'
 import { computeTeamTotals } from '@/lib/aggregates'
 import { OutreachRow } from '@/lib/types'

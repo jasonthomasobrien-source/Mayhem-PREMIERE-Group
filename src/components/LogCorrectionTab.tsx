@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { OutreachRow, Agent } from '@/lib/types'
-import { fetchAllOutreachAdmin, fetchAgents, deleteOutreachRecord } from '@/lib/queries'
+import { fetchAllOutreachAdmin, fetchAgents, deleteOutreachRecord } from '@/lib/client-queries'
 import { LoadingSpinner } from './LoadingSpinner'
 import { toast } from '@/lib/toast'
 

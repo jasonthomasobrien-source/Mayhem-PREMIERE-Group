@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchAgents, fetchOutreach } from '@/lib/queries'
+import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { subscribeToOutreach } from '@/lib/realtime'
 import { buildLeaderboard } from '@/lib/aggregates'
 import { Agent, OutreachRow } from '@/lib/types'
 import { LoadingSpinner } from './LoadingSpinner'
 import { LeaderboardRow } from './LeaderboardRow'
+import { getStreak, isOnPace } from '@/lib/badge-logic'
 
 export function TopAgents() {
   const [agents, setAgents] = useState<Agent[]>([])
@@ -67,9 +68,18 @@ export function TopAgents() {
             No activity yet
           </p>
         ) : (
-          topThree.map((row) => (
-            <LeaderboardRow key={row.agent.id} row={row} />
-          ))
+          topThree.map((row) => {
+            const streak = getStreak(rows, row.agent.id)
+            const onPace = isOnPace(rows, row.agent.id, 'sprint')
+            return (
+              <LeaderboardRow
+                key={row.agent.id}
+                row={row}
+                streak={streak}
+                onPace={onPace}
+              />
+            )
+          })
         )}
       </div>
     </div>

@@ -22,6 +22,7 @@ export function PINGate({ onSuccess }: PINGateProps) {
 
     // Simple client-side validation (PIN is environment variable)
     if (pin === correctPin) {
+      localStorage.setItem('admin-pin', pin)
       onSuccess()
     } else {
       setError('Incorrect PIN')
@@ -49,7 +50,7 @@ export function PINGate({ onSuccess }: PINGateProps) {
                 placeholder="Enter PIN"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
-                maxLength={6}
+                maxLength={20}
                 className="text-center text-lg tracking-widest"
                 autoFocus
               />

@@ -1,9 +1,10 @@
-import { supabase } from './supabase/client'
 import { supabaseAdmin } from './supabase/server'
+import { getSupabase } from './supabase/client'
 import { Agent, OutreachRow, SprintConfig } from './types'
 
 // Fetch all agents
 export async function fetchAgents(): Promise<Agent[]> {
+  const supabase = getSupabase()
   const { data, error } = await supabase.from('agents').select('*')
 
   if (error) {
@@ -16,6 +17,7 @@ export async function fetchAgents(): Promise<Agent[]> {
 
 // Fetch all outreach records
 export async function fetchOutreach(): Promise<OutreachRow[]> {
+  const supabase = getSupabase()
   const { data, error } = await supabase
     .from('outreach')
     .select('*')
@@ -34,6 +36,7 @@ export async function fetchOutreachByDateRange(
   startDate: string,
   endDate: string
 ): Promise<OutreachRow[]> {
+  const supabase = getSupabase()
   const { data, error } = await supabase
     .from('outreach')
     .select('*')
@@ -51,6 +54,7 @@ export async function fetchOutreachByDateRange(
 
 // Fetch outreach for a specific agent
 export async function fetchOutreachByAgent(agentId: string): Promise<OutreachRow[]> {
+  const supabase = getSupabase()
   const { data, error } = await supabase
     .from('outreach')
     .select('*')
@@ -67,6 +71,7 @@ export async function fetchOutreachByAgent(agentId: string): Promise<OutreachRow
 
 // Fetch sprint config
 export async function fetchSprintConfig(): Promise<SprintConfig | null> {
+  const supabase = getSupabase()
   const { data, error } = await supabase.from('sprint_config').select('*').eq('id', 1).single()
 
   if (error) {
@@ -81,6 +86,7 @@ export async function fetchSprintConfig(): Promise<SprintConfig | null> {
 export async function insertOutreach(
   records: Omit<OutreachRow, 'id' | 'logged_at'>[]
 ): Promise<OutreachRow[] | null> {
+  const supabase = getSupabase()
   const { data, error } = await supabase.from('outreach').insert(records).select()
 
   if (error) {
@@ -189,4 +195,9 @@ export async function deleteOutreachRecord(id: string): Promise<boolean> {
   }
 
   return true
+}
+
+// Fetch all outreach (alias for fetchAllOutreachAdmin for consistency)
+export async function fetchAllOutreach(): Promise<OutreachRow[]> {
+  return fetchAllOutreachAdmin()
 }
