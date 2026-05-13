@@ -9,6 +9,7 @@ import { NumberStepper } from './NumberStepper'
 import { useToast } from '@/hooks/use-toast'
 import { insertOutreach } from '@/lib/client-queries'
 import { todayDetroit, dateToISO } from '@/lib/dates'
+import { OutreachRow } from '@/lib/types'
 
 const SPRINT_START_DATE = new Date('2026-05-12')
 
@@ -125,7 +126,7 @@ export function LogActivityModal({
 
     setLoading(true)
     try {
-      const rowsToInsert: Array<{ agent_id: string; activity_date: string; attempts: number; leads: number }> = []
+      const rowsToInsert: Omit<OutreachRow, 'id' | 'logged_at'>[] = []
 
       if (mode === 'today') {
         rowsToInsert.push({
@@ -133,6 +134,7 @@ export function LogActivityModal({
           activity_date: todayStr,
           attempts,
           leads,
+          note: null,
         })
       } else {
         const distribution = distributeAcrossDays(attempts, leads, numDays)
@@ -149,6 +151,7 @@ export function LogActivityModal({
             activity_date: dateStr,
             attempts: dayAttempts,
             leads: dayLeads,
+            note: null,
           })
         }
       }
