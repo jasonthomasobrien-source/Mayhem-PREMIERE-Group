@@ -238,17 +238,16 @@ Each row displays (left to right):
 5. User enters total attempts (e.g., 35 for the whole range) and leads (e.g., 2)
 6. Submit logic:
    - For each day in [start, end], create one row
-   - Each row: same attempts/leads value (not divided)
-   - Example: 7 rows, each with `attempts: 35, leads: 2`
-   - **Note:** Queries sum these, so total = 35 × 7 = 245 (this is intentional; user is saying "I logged 35 attempts total across 7 days")
-   - **Alternative:** Distribute evenly (35 / 7 = 5 per day). [User to clarify intent]
+   - Distribute the total evenly across all days
+   - Example: 35 attempts ÷ 7 days = 5 per day
+   - Create 7 rows, each with `attempts: 5, leads: 0` (if 2 leads total, that's ~0.3 per day, rounded)
+   - **Note:** Queries sum these, so total = 35 (matches user intent)
 7. Modal closes, toast shows: "Logged 35 outreach for Jason across May 6–12 🎯"
 
-**→ Clarification needed:** When a user logs 35 attempts across 7 days, should we:
-- **A:** Store 35 per day (7 rows × 35 each = 245 total when summed)
-- **B:** Distribute evenly (5 per day, 7 rows × 5 = 35 total when summed)
-
-*Current assumption: **B** (even distribution). The user enters the total, we divide by the number of days.*
+**Distribution algorithm:**
+- Attempts per day: `Math.floor(total_attempts / num_days)`
+- Leads per day: `Math.floor(total_leads / num_days)`
+- Remainder handling: Assign extra attempts/leads to the last day(s) in the range to preserve total
 
 ---
 
