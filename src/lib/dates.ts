@@ -111,7 +111,7 @@ export function isWithinSprintWindow(date: Date): boolean {
   return iso >= start && iso <= end
 }
 
-// Check if date is today or in the past (no future logging)
+// Check if date is within sprintable range (today through sprint end)
 export function isNotInFuture(date: Date): boolean {
-  return isBefore(date, todayDetroit()) || dateToISO(date) === dateToISO(todayDetroit())
+  return !isAfter(date, SPRINT_END)
 }

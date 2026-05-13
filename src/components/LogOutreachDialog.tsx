@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { eachDayOfInterval } from 'date-fns'
+import { eachDayOfInterval, subDays } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -53,6 +54,16 @@ export function LogOutreachDialog({
   const [loading, setLoading] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [datePickerMode, setDatePickerMode] = useState<'single' | 'start' | 'end'>('single')
+
+  const handleModeChange = (newMode: 'today' | 'range') => {
+    setMode(newMode)
+    if (newMode === 'range') {
+      const today = todayDetroit()
+      const weekAgo = subDays(today, 6)
+      setRangeStart(weekAgo)
+      setRangeEnd(today)
+    }
+  }
 
   const getSelectedDates = () => {
     if (mode === 'today') {
@@ -185,7 +196,7 @@ export function LogOutreachDialog({
             <label className="text-sm font-medium text-white block mb-2">
               Date
             </label>
-            <DateModeToggle mode={mode} onChange={setMode} />
+            <DateModeToggle mode={mode} onChange={handleModeChange} />
           </div>
 
           {/* Date picker - single mode */}
@@ -196,12 +207,13 @@ export function LogOutreachDialog({
               </label>
               <button
                 onClick={() => {
-                  setShowDatePicker(!showDatePicker)
                   setDatePickerMode('single')
+                  setShowDatePicker(true)
                 }}
-                className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left"
+                className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left flex items-center justify-between"
               >
-                {formatDate(singleDate)}
+                <span>{formatDate(singleDate)}</span>
+                <CalendarIcon className="h-4 w-4" style={{ color: '#D4AF54' }} />
               </button>
               {showDatePicker && datePickerMode === 'single' && (
                 <div className="mt-2 p-2 border border-brand-muted rounded-md bg-brand-black">
@@ -212,7 +224,7 @@ export function LogOutreachDialog({
                       if (date) setSingleDate(date)
                       setShowDatePicker(false)
                     }}
-                    disabled={(date) => !isWithinSprintWindow(date) || !isNotInFuture(date)}
+                    disabled={(date) => !isWithinSprintWindow(date)}
                   />
                 </div>
               )}
@@ -228,12 +240,13 @@ export function LogOutreachDialog({
                 </label>
                 <button
                   onClick={() => {
-                    setShowDatePicker(!showDatePicker)
                     setDatePickerMode('start')
+                    setShowDatePicker(true)
                   }}
-                  className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left"
+                  className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left flex items-center justify-between"
                 >
-                  {formatDate(rangeStart)}
+                  <span>{formatDate(rangeStart)}</span>
+                  <CalendarIcon className="h-4 w-4" style={{ color: '#D4AF54' }} />
                 </button>
                 {showDatePicker && datePickerMode === 'start' && (
                   <div className="mt-2 p-2 border border-brand-muted rounded-md bg-brand-black">
@@ -244,7 +257,7 @@ export function LogOutreachDialog({
                         if (date) setRangeStart(date)
                         setShowDatePicker(false)
                       }}
-                      disabled={(date) => !isWithinSprintWindow(date) || !isNotInFuture(date)}
+                      disabled={(date) => !isWithinSprintWindow(date)}
                     />
                   </div>
                 )}
@@ -256,12 +269,13 @@ export function LogOutreachDialog({
                 </label>
                 <button
                   onClick={() => {
-                    setShowDatePicker(!showDatePicker)
                     setDatePickerMode('end')
+                    setShowDatePicker(true)
                   }}
-                  className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left"
+                  className="w-full px-3 py-2 rounded-md bg-brand-surface border border-brand-muted text-white text-left flex items-center justify-between"
                 >
-                  {formatDate(rangeEnd)}
+                  <span>{formatDate(rangeEnd)}</span>
+                  <CalendarIcon className="h-4 w-4" style={{ color: '#D4AF54' }} />
                 </button>
                 {showDatePicker && datePickerMode === 'end' && (
                   <div className="mt-2 p-2 border border-brand-muted rounded-md bg-brand-black">
@@ -272,7 +286,7 @@ export function LogOutreachDialog({
                         if (date) setRangeEnd(date)
                         setShowDatePicker(false)
                       }}
-                      disabled={(date) => !isWithinSprintWindow(date) || !isNotInFuture(date)}
+                      disabled={(date) => !isWithinSprintWindow(date)}
                     />
                   </div>
                 )}

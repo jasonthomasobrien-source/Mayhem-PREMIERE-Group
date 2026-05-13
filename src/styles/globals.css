@@ -4,6 +4,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-brand-gold: #B18F32;
+  --color-brand-gold-bright: #D4AF54;
+  --color-brand-black: #121212;
+  --color-brand-surface: #1A1A1A;
+  --color-brand-muted: #888888;
+  --color-brand-success: #22C55E;
+  --color-brand-danger: #EF4444;
+}
+
 html {
   --font-poppins: 'Poppins', sans-serif;
 }
