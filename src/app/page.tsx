@@ -3,19 +3,13 @@
 import { useEffect, useState, Suspense } from 'react'
 import { BrandHeader } from '@/components/BrandHeader'
 import { LogActivityModal } from '@/components/LogActivityModal'
+import { AgentSearchSelector } from '@/components/AgentSearchSelector'
 import { RecentActivity } from '@/components/RecentActivity'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select'
 import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { computeTeamTotals } from '@/lib/aggregates'
 import { Agent, OutreachRow } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
-
-const AGENT_STORAGE_KEY = 'mayhem-selected-agent'
 
 export default function Home() {
   const [agents, setAgents] = useState<Agent[]>([])
@@ -37,6 +31,7 @@ export default function Home() {
         setAgents(agentsData.filter((a) => a.active))
 
         // Restore selected agent from localStorage, or default to first
+        const AGENT_STORAGE_KEY = 'mayhem-selected-agent'
         const savedAgentId = localStorage.getItem(AGENT_STORAGE_KEY)
         if (savedAgentId && agentsData.find((a) => a.id === savedAgentId)) {
           setSelectedAgentId(savedAgentId)
@@ -61,7 +56,7 @@ export default function Home() {
 
   const handleAgentChange = (agentId: string) => {
     setSelectedAgentId(agentId)
-    localStorage.setItem(AGENT_STORAGE_KEY, agentId)
+    localStorage.setItem('mayhem-selected-agent', agentId)
   }
 
   const selectedAgent = agents.find((a) => a.id === selectedAgentId)
@@ -95,14 +90,11 @@ export default function Home() {
               <label className="text-sm font-medium text-brand-muted block mb-2">
                 Who&apos;s logging?
               </label>
-              <Select value={selectedAgentId} onValueChange={handleAgentChange}>
-                {selectedAgentId === '' && <SelectItem value="">Select an agent</SelectItem>}
-                {agents.map((agent) => (
-                  <SelectItem key={agent.id} value={agent.id}>
-                    {agent.emoji} {agent.name}
-                  </SelectItem>
-                ))}
-              </Select>
+              <AgentSearchSelector
+                agents={agents}
+                selectedAgentId={selectedAgentId}
+                onAgentChange={handleAgentChange}
+              />
             </div>
 
             {/* Log Activity Button */}
