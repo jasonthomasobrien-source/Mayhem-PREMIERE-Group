@@ -26,6 +26,20 @@ export function AgentSearchSelector({
     setSelectedAgent(agent || null)
   }, [agents, selectedAgentId])
 
+  // Restore selected agent from localStorage on mount if not set by props
+  useEffect(() => {
+    if (!selectedAgentId && agents.length > 0) {
+      const savedAgentId = localStorage.getItem('mayhem-selected-agent')
+      if (savedAgentId) {
+        const agent = agents.find((a) => a.id === savedAgentId)
+        if (agent) {
+          setSelectedAgent(agent)
+          onAgentChange(agent.id)
+        }
+      }
+    }
+  }, [])
+
   // Filter agents by substring match
   const filteredAgents = inputValue.trim()
     ? agents.filter((agent) =>
@@ -95,10 +109,20 @@ export function AgentSearchSelector({
         ref={inputRef}
         type="text"
         value={selectedAgent && !isOpen ? `${selectedAgent.emoji} ${selectedAgent.name}` : inputValue}
-        onChange={handleInputChange}
-        onFocus={handleInputFocus}
+        readOnly={false}
+        onChange={(e) => {
+          if (!(selectedAgent && !isOpen)) {
+            handleInputChange(e)
+          }
+        }}
+        onFocus={() => {
+          if (selectedAgent && !isOpen) {
+            handleInputFocus()
+          } else if (!isOpen) {
+            setIsOpen(true)
+          }
+        }}
         placeholder="Type your name"
-        readOnly={!!(selectedAgent && !isOpen)}
         className={`w-full px-4 py-2 rounded-lg border transition-colors ${
           selectedAgent && !isOpen
             ? 'bg-brand-surface border-brand-gold/30 text-white cursor-pointer'
