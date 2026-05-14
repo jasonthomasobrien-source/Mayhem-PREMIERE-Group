@@ -3,7 +3,6 @@
 import { Agent, OutreachRow, LeaderboardRow as LeaderboardRowType } from '@/lib/types'
 import { buildLeaderboard } from '@/lib/aggregates'
 import { getStreak } from '@/lib/badge-logic'
-import { conversionRate } from '@/lib/dates'
 
 interface OutreachBarChartProps {
   agents: Agent[]
@@ -52,13 +51,11 @@ export function OutreachBarChart({
       <div className="space-y-4">
         {leaderboard.map((row) => {
           const attempts = getAttempts(row)
-          const leads = activeTab === 'today' ? row.todayLeads : activeTab === 'week' ? row.weekLeads : row.sprintLeads
           const barWidthPercent = (attempts / maxAttempts) * 100
           const targetWidthPercent = (target / maxAttempts) * 100
           const isBeyondTarget = attempts > target
           const streak = getStreak(rows, row.agent.id)
-          const conversion = attempts > 0 ? conversionRate(attempts, leads) : 0
-          const conversionPercent = (conversion * 100).toFixed(1)
+          const goalPercent = attempts > 0 ? (attempts / target) * 100 : 0
           const isMVP = activeTab === 'today' && row.rank === 1
 
           return (
@@ -103,7 +100,7 @@ export function OutreachBarChart({
                 </div>
               </div>
 
-              {/* Badges: MVP, Conversion %, Streak */}
+              {/* Badges: MVP, Goal %, Streak */}
               <div className="flex gap-2 ml-2 flex-shrink-0 min-w-fit">
                 {isMVP && (
                   <span className="text-xs font-bold bg-brand-gold text-brand-black px-2 py-1 rounded whitespace-nowrap">
@@ -112,12 +109,12 @@ export function OutreachBarChart({
                 )}
                 <span
                   className={`text-xs font-semibold ${
-                    parseFloat(conversionPercent) >= 10
+                    goalPercent >= 100
                       ? 'text-brand-success'
                       : 'text-brand-muted'
                   }`}
                 >
-                  {conversionPercent}%
+                  {goalPercent.toFixed(1)}%
                 </span>
                 {streak > 0 && (
                   <span className="text-sm font-semibold whitespace-nowrap">

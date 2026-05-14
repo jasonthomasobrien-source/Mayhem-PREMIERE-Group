@@ -48,7 +48,7 @@ export function TopAgents() {
     return unsubscribe
   }, [])
 
-  const leaderboard = buildLeaderboard(agents, rows, 'sprint', '2026-05-12')
+  const leaderboard = buildLeaderboard(agents, rows, 'sprint', '2026-05-10')
   const topThree = leaderboard.slice(0, 3)
 
   if (loading) {
@@ -77,6 +77,7 @@ export function TopAgents() {
                 row={row}
                 streak={streak}
                 onPace={onPace}
+                period="sprint"
               />
             )
           })

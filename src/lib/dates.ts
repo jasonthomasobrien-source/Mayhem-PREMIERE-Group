@@ -14,7 +14,7 @@ import {
 import { toZonedTime } from 'date-fns-tz'
 
 const TIMEZONE = 'America/Detroit'
-const SPRINT_START = new Date('2026-05-12')
+const SPRINT_START = new Date('2026-05-10')
 const SPRINT_END = new Date('2026-06-30')
 
 // Get current date in Detroit timezone

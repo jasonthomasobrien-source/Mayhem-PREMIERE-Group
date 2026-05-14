@@ -31,13 +31,10 @@ export default function Home() {
 
         setAgents(agentsData.filter((a) => a.active))
 
-        // Restore selected agent from localStorage, or default to first
+        // Restore selected agent from localStorage
         const savedAgentId = localStorage.getItem(AGENT_STORAGE_KEY)
         if (savedAgentId && agentsData.find((a) => a.id === savedAgentId)) {
           setSelectedAgentId(savedAgentId)
-        } else if (agentsData.length > 0) {
-          setSelectedAgentId(agentsData[0].id)
-          localStorage.setItem(AGENT_STORAGE_KEY, agentsData[0].id)
         }
 
         // Calculate team totals

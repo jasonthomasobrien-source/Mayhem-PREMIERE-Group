@@ -92,8 +92,8 @@ export function AgentSearchSelector({
       <input
         ref={inputRef}
         type="text"
-        value={selectedAgent && !isOpen ? `${selectedAgent.emoji} ${selectedAgent.name}` : inputValue}
-        readOnly={false}
+        value={selectedAgent && !isOpen ? `${selectedAgent.emoji || '👤'} ${selectedAgent.name}` : inputValue}
+        readOnly={!isOpen && !!selectedAgent}
         onChange={handleInputChange}
         onFocus={() => {
           if (selectedAgent && !isOpen) {
@@ -102,7 +102,7 @@ export function AgentSearchSelector({
             setIsOpen(true)
           }
         }}
-        placeholder="Type your name"
+        placeholder={selectedAgent ? '' : 'Type your name'}
         className={`w-full px-4 py-2 rounded-lg border transition-colors ${
           selectedAgent && !isOpen
             ? 'bg-brand-surface border-brand-gold/30 text-white cursor-pointer'

@@ -89,7 +89,7 @@ export function LogOutreachDialog({
 
     for (const date of dates) {
       if (!isWithinSprintWindow(date)) {
-        return 'Date must be within sprint window (May 12 - June 30, 2026)'
+        return 'Date must be within sprint window (May 10 - June 30, 2026)'
       }
       if (!isNotInFuture(date)) {
         return 'Cannot log future dates'
@@ -120,11 +120,14 @@ export function LogOutreachDialog({
 
     setLoading(true)
     try {
+      const perDayAttempts = dayCount > 1 ? Math.floor(attempts / dayCount) : attempts
+      const perDayLeads = dayCount > 1 ? Math.floor(leads / dayCount) : leads
+
       const records = selectedDates.map((date) => ({
         agent_id: agentId,
         activity_date: dateToISO(date),
-        attempts,
-        leads,
+        attempts: perDayAttempts,
+        leads: perDayLeads,
         note: note || null,
       }))
 

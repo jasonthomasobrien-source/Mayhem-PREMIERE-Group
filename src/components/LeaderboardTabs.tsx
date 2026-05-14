@@ -98,13 +98,13 @@ export function LeaderboardTabs() {
               agents={agents}
               rows={rows}
               activeTab={activeTab}
-              sprintStartDate="2026-05-12"
+              sprintStartDate="2026-05-10"
             />
             <LeadsBarChart
               agents={agents}
               rows={rows}
               activeTab={activeTab}
-              sprintStartDate="2026-05-12"
+              sprintStartDate="2026-05-10"
             />
           </div>
         )}

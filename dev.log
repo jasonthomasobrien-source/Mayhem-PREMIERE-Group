@@ -2,62 +2,13 @@
 > mayhem-sprint@0.1.0 dev
 > next dev
 
+⚠ Port 3000 is in use by process 19705, using available port 3003 instead.
 ▲ Next.js 16.2.6 (Turbopack)
-- Local:         http://localhost:3000
-- Network:       http://192.168.1.245:3000
+- Local:         http://localhost:3003
+- Network:       http://192.168.1.245:3003
 - Environments: .env.local
-✓ Ready in 303ms
+✓ Ready in 555ms
 
- GET /report 200 in 308ms (next.js: 108ms, application-code: 200ms)
+ GET /search 404 in 1902ms (next.js: 1596ms, application-code: 305ms)
 [browser] Image with src "/premiere-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. (file:///Users/jasonobrien/Documents/MayHem Tracker/.next/dev/static/chunks/node_modules_next_dist_115brz8._.js:2477:13)
- GET /api/agents 200 in 318ms (next.js: 98ms, application-code: 219ms)
- GET /api/outreach?aggregates=true 200 in 318ms (next.js: 125ms, application-code: 193ms)
- GET /api/outreach 200 in 435ms (next.js: 121ms, application-code: 314ms)
- GET / 200 in 57ms (next.js: 13ms, application-code: 44ms)
- GET /report 200 in 27ms (next.js: 3ms, application-code: 24ms)
-✓ Compiled in 472ms
- GET /report 200 in 137ms (next.js: 48ms, application-code: 89ms)
- GET /report 200 in 63ms (next.js: 5ms, application-code: 59ms)
- GET /report 200 in 20ms (next.js: 6ms, application-code: 14ms)
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-✓ Compiled in 68ms
- GET /report 200 in 163ms (next.js: 7ms, application-code: 156ms)
- GET /api/outreach?aggregates=true 200 in 163ms (next.js: 154ms, application-code: 9ms)
- GET /api/outreach 200 in 164ms (next.js: 151ms, application-code: 13ms)
- GET /api/agents 200 in 164ms (next.js: 134ms, application-code: 31ms)
-[browser] Image with src "/premiere-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. (file:///Users/jasonobrien/Documents/MayHem Tracker/.next/dev/static/chunks/node_modules_next_dist_115brz8._.js:2477:13)
- GET /api/agents 200 in 193ms (next.js: 1266µs, application-code: 192ms)
- GET /api/outreach 200 in 198ms (next.js: 4ms, application-code: 194ms)
- GET /api/outreach?aggregates=true 200 in 201ms (next.js: 4ms, application-code: 198ms)
- GET /report 200 in 40ms (next.js: 4ms, application-code: 37ms)
- GET /leaderboard 200 in 95ms (next.js: 57ms, application-code: 39ms)
- GET /api/outreach 200 in 189ms (next.js: 4ms, application-code: 185ms)
- GET /api/outreach 200 in 193ms (next.js: 1141µs, application-code: 192ms)
- GET /api/agents 200 in 186ms (next.js: 1291µs, application-code: 184ms)
- GET /api/outreach 200 in 118ms (next.js: 1209µs, application-code: 117ms)
- GET /api/agents 200 in 118ms (next.js: 1681µs, application-code: 116ms)
- GET /api/outreach 200 in 116ms (next.js: 1114µs, application-code: 115ms)
- GET / 200 in 23ms (next.js: 10ms, application-code: 13ms)
- GET /api/outreach 200 in 117ms (next.js: 1073µs, application-code: 116ms)
- GET /api/agents 200 in 124ms (next.js: 2ms, application-code: 122ms)
- GET /api/outreach 200 in 105ms (next.js: 1132µs, application-code: 104ms)
- GET /api/agents 200 in 117ms (next.js: 4ms, application-code: 113ms)
- GET /api/outreach 200 in 112ms (next.js: 8ms, application-code: 104ms)
- GET /api/agents 200 in 106ms (next.js: 3ms, application-code: 103ms)
- GET /api/agents 200 in 92ms (next.js: 1514µs, application-code: 90ms)
- GET /api/outreach 200 in 101ms (next.js: 3ms, application-code: 98ms)
- GET /leaderboard 200 in 17ms (next.js: 5ms, application-code: 12ms)
- GET /api/outreach 200 in 154ms (next.js: 3ms, application-code: 151ms)
- GET /api/outreach 200 in 104ms (next.js: 1047µs, application-code: 103ms)
- GET /api/agents 200 in 106ms (next.js: 990µs, application-code: 105ms)
- GET /api/outreach 200 in 110ms (next.js: 1343µs, application-code: 108ms)
- GET /api/agents 200 in 109ms (next.js: 1210µs, application-code: 108ms)
- GET /api/outreach 200 in 109ms (next.js: 1984µs, application-code: 107ms)
- GET /report 200 in 19ms (next.js: 2ms, application-code: 17ms)
- GET /api/outreach 200 in 95ms (next.js: 7ms, application-code: 88ms)
- GET /api/agents 200 in 99ms (next.js: 4ms, application-code: 95ms)
- GET /api/outreach?aggregates=true 200 in 191ms (next.js: 9ms, application-code: 182ms)
- GET /api/outreach 200 in 95ms (next.js: 2ms, application-code: 93ms)
- GET /api/agents 200 in 104ms (next.js: 992µs, application-code: 103ms)
- GET /api/outreach?aggregates=true 200 in 102ms (next.js: 1118µs, application-code: 101ms)
-✓ Compiled in 124ms
+ GET / 200 in 340ms (next.js: 79ms, application-code: 262ms)

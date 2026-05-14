@@ -11,7 +11,7 @@ import { insertOutreach } from '@/lib/client-queries'
 import { todayDetroit, dateToISO } from '@/lib/dates'
 import { OutreachRow } from '@/lib/types'
 
-const SPRINT_START_DATE = new Date('2026-05-12')
+const SPRINT_START_DATE = new Date('2026-05-10')
 
 interface LogActivityModalProps {
   open: boolean

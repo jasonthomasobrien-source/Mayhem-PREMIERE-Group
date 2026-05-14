@@ -6,6 +6,7 @@ import {
   getSprintWeekNumber,
   getCurrentSprintWeek,
   getDaysElapsed,
+  todayDetroit,
 } from './dates'
 
 // Sum attempts and leads for an agent across a date range
@@ -27,11 +28,6 @@ export function sumByDateRange(
   }
 }
 
-// Get today's date in ISO format (Detroit timezone)
-function todayISO(): string {
-  const now = new Date()
-  return dateToISO(new Date(now.getTime() + now.getTimezoneOffset() * 60000 - 4 * 60 * 60 * 1000))
-}
 
 // Compute stats for a single agent across all data
 export function computeAgentStats(
@@ -44,7 +40,7 @@ export function computeAgentStats(
 
   // Current week boundaries
   const currentWeek = getCurrentSprintWeek()
-  const weekStart = new Date('2026-05-12')
+  const weekStart = new Date('2026-05-10')
   weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7)
   const weekEnd = new Date(weekStart)
   weekEnd.setDate(weekEnd.getDate() + 6)
@@ -86,10 +82,10 @@ export function buildLeaderboard(
   period: 'today' | 'week' | 'sprint',
   sprintStartISO: string
 ): LeaderboardRow[] {
-  const now = new Date()
-  const todayISO = dateToISO(now)
+  const today = todayDetroit()
+  const todayISO = dateToISO(today)
   const currentWeek = getCurrentSprintWeek()
-  const weekStart = new Date('2026-05-12')
+  const weekStart = new Date('2026-05-10')
   weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7)
   const weekEnd = new Date(weekStart)
   weekEnd.setDate(weekEnd.getDate() + 6)
@@ -159,8 +155,8 @@ export function getTodayTeamActivity(allRows: OutreachRow[]): {
   attempts: number
   leads: number
 } {
-  const now = new Date()
-  const todayISO = dateToISO(now)
+  const today = todayDetroit()
+  const todayISO = dateToISO(today)
   const todayRows = allRows.filter((r) => r.activity_date === todayISO)
   return {
     attempts: todayRows.reduce((sum, r) => sum + r.attempts, 0),

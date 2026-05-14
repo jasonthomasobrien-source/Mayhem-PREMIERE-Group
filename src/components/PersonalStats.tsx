@@ -10,7 +10,7 @@ interface PersonalStatsProps {
 }
 
 export function PersonalStats({ agent, rows }: PersonalStatsProps) {
-  const stats = computeAgentStats(agent, rows, '2026-05-12')
+  const stats = computeAgentStats(agent, rows, '2026-05-10')
   const conversionStr = formatConversion(stats.totalAttempts, stats.totalLeads)
 
   return (

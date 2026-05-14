@@ -9,6 +9,7 @@ interface LeaderboardRowProps {
   isConversionKing?: boolean
   streak: number
   onPace: boolean
+  period: 'today' | 'week' | 'sprint'
 }
 
 export function LeaderboardRow({
@@ -17,15 +18,26 @@ export function LeaderboardRow({
   isConversionKing = false,
   streak,
   onPace,
+  period,
 }: LeaderboardRowProps) {
-  // Determine which attempts/leads to show based on context
-  const attempts = row.todayAttempts > 0 ? row.todayAttempts :
-                   row.weekAttempts > 0 ? row.weekAttempts :
-                   row.sprintAttempts
+  // Determine which attempts/leads to show based on period
+  let attempts = row.sprintAttempts
+  let leads = row.sprintLeads
+  let goalPercent = 0
 
-  const leads = row.todayLeads > 0 ? row.todayLeads :
-                row.weekLeads > 0 ? row.weekLeads :
-                row.sprintLeads
+  if (period === 'today') {
+    attempts = row.todayAttempts
+    leads = row.todayLeads
+    goalPercent = attempts > 0 ? (attempts / 5) * 100 : 0
+  } else if (period === 'week') {
+    attempts = row.weekAttempts
+    leads = row.weekLeads
+    goalPercent = attempts > 0 ? (attempts / 25) * 100 : 0
+  } else {
+    attempts = row.sprintAttempts
+    leads = row.sprintLeads
+    goalPercent = attempts > 0 ? (attempts / 175) * 100 : 0
+  }
 
   const conversionPercent = attempts > 0 ? ((leads / attempts) * 100).toFixed(1) : '0.0'
 
@@ -48,11 +60,11 @@ export function LeaderboardRow({
         {streak > 0 && <BadgePill type="streak" value={streak} />}
       </div>
 
-      {/* Stats: Attempts · Leads · Conversion % */}
+      {/* Stats: Attempts · Goal % */}
       <div className="text-sm text-brand-muted mb-3">
-        {attempts} attempts · {leads} leads ·{' '}
-        <span className={parseFloat(conversionPercent) >= 10 ? 'text-brand-success' : ''}>
-          {conversionPercent}%
+        {attempts} attempts ·{' '}
+        <span className={goalPercent >= 100 ? 'text-brand-success' : ''}>
+          {goalPercent.toFixed(0)}%
         </span>
       </div>
 

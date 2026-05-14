@@ -46,7 +46,7 @@ export function isOnPace(
 
   if (period === 'week') {
     const currentWeek = getCurrentSprintWeek()
-    const weekStart = new Date('2026-05-12')
+    const weekStart = new Date('2026-05-10')
     weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7)
     const weekEnd = new Date(weekStart)
     weekEnd.setDate(weekEnd.getDate() + 6)
@@ -61,7 +61,7 @@ export function isOnPace(
   }
 
   // Sprint: compute expected based on days elapsed
-  const sprintStart = new Date('2026-05-12')
+  const sprintStart = new Date('2026-05-10')
   const today = todayDetroit()
   const daysElapsed = Math.floor(
     (today.getTime() - sprintStart.getTime()) / (1000 * 60 * 60 * 24)
@@ -86,7 +86,7 @@ export function getTopAgentForPeriod(
     filteredRows = rows.filter((r) => r.activity_date === todayISO)
   } else if (period === 'week') {
     const currentWeek = getCurrentSprintWeek()
-    const weekStart = new Date('2026-05-12')
+    const weekStart = new Date('2026-05-10')
     weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7)
     const weekEnd = new Date(weekStart)
     weekEnd.setDate(weekEnd.getDate() + 6)
@@ -132,7 +132,7 @@ export function getConversionKing(
     filteredRows = rows.filter((r) => r.activity_date === todayISO)
   } else if (period === 'week') {
     const currentWeek = getCurrentSprintWeek()
-    const weekStart = new Date('2026-05-12')
+    const weekStart = new Date('2026-05-10')
     weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7)
     const weekEnd = new Date(weekStart)
     weekEnd.setDate(weekEnd.getDate() + 6)

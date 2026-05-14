@@ -3,7 +3,6 @@
 import { Agent, OutreachRow, LeaderboardRow as LeaderboardRowType } from '@/lib/types'
 import { buildLeaderboard } from '@/lib/aggregates'
 import { getStreak } from '@/lib/badge-logic'
-import { conversionRate } from '@/lib/dates'
 
 interface LeadsBarChartProps {
   agents: Agent[]
@@ -40,11 +39,8 @@ export function LeadsBarChart({
       <div className="space-y-4">
         {leaderboard.map((row) => {
           const leads = getLeads(row)
-          const attempts = activeTab === 'today' ? row.todayAttempts : activeTab === 'week' ? row.weekAttempts : row.sprintAttempts
           const barWidthPercent = (leads / maxLeads) * 100
           const streak = getStreak(rows, row.agent.id)
-          const conversion = attempts > 0 ? conversionRate(attempts, leads) : 0
-          const conversionPercent = (conversion * 100).toFixed(1)
           const isMVP = activeTab === 'today' && row.rank === 1
 
           return (
@@ -77,22 +73,13 @@ export function LeadsBarChart({
                 </div>
               </div>
 
-              {/* Badges: MVP, Conversion %, Streak */}
+              {/* Badges: MVP, Streak */}
               <div className="flex gap-2 ml-2 flex-shrink-0 min-w-fit">
                 {isMVP && (
                   <span className="text-xs font-bold bg-brand-gold text-brand-black px-2 py-1 rounded whitespace-nowrap">
                     Today's MVP
                   </span>
                 )}
-                <span
-                  className={`text-xs font-semibold ${
-                    parseFloat(conversionPercent) >= 10
-                      ? 'text-brand-success'
-                      : 'text-brand-muted'
-                  }`}
-                >
-                  {conversionPercent}%
-                </span>
                 {streak > 0 && (
                   <span className="text-sm font-semibold whitespace-nowrap">
                     🔥 {streak}

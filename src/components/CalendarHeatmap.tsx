@@ -122,31 +122,31 @@ export function CalendarHeatmap({ data, sprintStart, sprintEnd, agentName }: Cal
                   const isDifferentMonth = day.getMonth() !== months[0].days[0].getMonth()
 
                   return (
-                    <div
-                      key={idx}
-                      className={`
-                        relative
-                        h-9 w-9
-                        flex items-center justify-center
-                        rounded
-                        border border-gray-800
-                        text-xs font-semibold
-                        transition-all
-                        hover:ring-2 hover:ring-brand-gold
-                        cursor-default
-                        group
-                        ${bgColor}
-                        ${isDifferentMonth ? 'opacity-40' : 'text-white'}
-                      `}
-                      title={`${format(day, 'MMM dd')} · ${attempts} attempts${leads > 0 ? ` · ${leads} lead${leads > 1 ? 's' : ''}` : ''}`}
-                    >
-                      {format(day, 'd')}
-
-                      {/* Tooltip on hover */}
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap border border-gray-700 z-10">
-                        {format(day, 'MMM dd')} · {attempts} {attempts === 1 ? 'attempt' : 'attempts'}
-                        {leads > 0 && ` · ${leads} ${leads === 1 ? 'lead' : 'leads'}`}
+                    <div key={idx} className="relative w-9 h-9 group/day">
+                      <div
+                        className={`
+                          absolute inset-0
+                          flex items-center justify-center
+                          rounded
+                          border border-gray-800
+                          text-xs font-semibold
+                          transition-all
+                          hover:border-brand-gold
+                          cursor-default
+                          ${bgColor}
+                          ${isDifferentMonth ? 'opacity-40' : 'text-white'}
+                        `}
+                      >
+                        {format(day, 'd')}
                       </div>
+                      {attempts > 0 && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/day:block z-50 pointer-events-none">
+                          <div style={{ backgroundColor: '#000000', color: '#FFFFFF' }} className="text-xs rounded px-2 py-1 whitespace-nowrap border border-brand-gold font-normal">
+                            {attempts} {attempts === 1 ? 'attempt' : 'attempts'}
+                            {leads > 0 && ` · ${leads} ${leads === 1 ? 'lead' : 'leads'}`}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )
                 })}
