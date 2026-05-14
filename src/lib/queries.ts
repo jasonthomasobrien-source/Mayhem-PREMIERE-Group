@@ -201,3 +201,41 @@ export async function deleteOutreachRecord(id: string): Promise<boolean> {
 export async function fetchAllOutreach(): Promise<OutreachRow[]> {
   return fetchAllOutreachAdmin()
 }
+
+// Get daily outreach totals (team-wide or by agent)
+export async function getOutreachDailyAggregates(
+  agentId?: string
+): Promise<{ date: string; attempts: number; leads: number }[]> {
+  const supabase = getSupabase()
+
+  let query = supabase
+    .from('outreach')
+    .select('activity_date, attempts, leads')
+
+  if (agentId) {
+    query = query.eq('agent_id', agentId)
+  }
+
+  const { data, error } = await query.order('activity_date', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching daily aggregates:', error)
+    return []
+  }
+
+  // Aggregate by date
+  const aggregated: Record<string, { attempts: number; leads: number }> = {}
+  ;(data || []).forEach((row) => {
+    if (!aggregated[row.activity_date]) {
+      aggregated[row.activity_date] = { attempts: 0, leads: 0 }
+    }
+    aggregated[row.activity_date].attempts += row.attempts
+    aggregated[row.activity_date].leads += row.leads
+  })
+
+  return Object.entries(aggregated).map(([date, { attempts, leads }]) => ({
+    date,
+    attempts,
+    leads,
+  }))
+}
