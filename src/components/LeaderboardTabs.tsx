@@ -1,14 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
+import { fetchAgents, fetchOutreach } from '@/lib/queries'
 import { subscribeToOutreach } from '@/lib/realtime'
-import { buildLeaderboard } from '@/lib/aggregates'
-import { Agent, OutreachRow, LeaderboardRow as LeaderboardRowType } from '@/lib/types'
+import { Agent, OutreachRow } from '@/lib/types'
 import { LoadingSpinner } from './LoadingSpinner'
-import { LeaderboardRow } from './LeaderboardRow'
-import { Button } from './ui/button'
-import { getStreak, isOnPace, getTopAgentForPeriod, getConversionKing } from '@/lib/badge-logic'
+import { OutreachBarChart } from './OutreachBarChart'
+import { LeadsBarChart } from './LeadsBarChart'
 
 export function LeaderboardTabs() {
   const [agents, setAgents] = useState<Agent[]>([])
@@ -51,10 +49,6 @@ export function LeaderboardTabs() {
     return unsubscribe
   }, [])
 
-  // Build leaderboard based on active tab
-  const leaderboard = buildLeaderboard(agents, rows, activeTab, '2026-05-12')
-  const topRow = leaderboard[0]
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -66,10 +60,14 @@ export function LeaderboardTabs() {
   return (
     <div className="space-y-6">
       {/* Tab Buttons */}
-      <div className="flex gap-2 border-b border-brand-muted/20">
+      <div className="flex gap-2 border-b border-brand-muted/20" role="tablist">
         {(['today', 'week', 'sprint'] as const).map((tab) => (
           <button
             key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`leaderboard-panel-${tab}`}
+            id={`tab-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-3 text-sm font-semibold transition-colors ${
               activeTab === tab
@@ -84,30 +82,31 @@ export function LeaderboardTabs() {
         ))}
       </div>
 
-      {/* Leaderboard Rows */}
-      <div className="space-y-3">
-        {leaderboard.length === 0 ? (
+      {/* Charts */}
+      <div
+        id={`leaderboard-panel-${activeTab}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${activeTab}`}
+      >
+        {rows.length === 0 ? (
           <p className="text-center py-8 text-brand-muted">
             No activity yet. Keep pushing!
           </p>
         ) : (
-          leaderboard.map((row) => {
-            const streak = getStreak(rows, row.agent.id)
-            const onPace = isOnPace(rows, row.agent.id, activeTab)
-            const topAgent = getTopAgentForPeriod(rows, agents, activeTab)
-            const conversionKing = getConversionKing(rows, agents, activeTab)
-
-            return (
-              <LeaderboardRow
-                key={row.agent.id}
-                row={row}
-                streak={streak}
-                onPace={onPace}
-                isMVP={activeTab === 'today' && topAgent?.id === row.agent.id}
-                isConversionKing={conversionKing?.id === row.agent.id}
-              />
-            )
-          })
+          <div className="space-y-12">
+            <OutreachBarChart
+              agents={agents}
+              rows={rows}
+              activeTab={activeTab}
+              sprintStartDate="2026-05-12"
+            />
+            <LeadsBarChart
+              agents={agents}
+              rows={rows}
+              activeTab={activeTab}
+              sprintStartDate="2026-05-12"
+            />
+          </div>
         )}
       </div>
     </div>

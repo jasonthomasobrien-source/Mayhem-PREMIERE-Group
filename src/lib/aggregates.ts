@@ -98,34 +98,24 @@ export function buildLeaderboard(
   const rows = agents.map((agent) => {
     const allStats = computeAgentStats(agent, allRows, sprintStartISO)
 
-    let periodAttempts = 0
-    let periodLeads = 0
+    // Compute today's stats
+    const todayData = sumByDateRange(agent.id, allRows, todayISO, todayISO)
 
-    if (period === 'today') {
-      const todayData = sumByDateRange(agent.id, allRows, todayISO, todayISO)
-      periodAttempts = todayData.attempts
-      periodLeads = todayData.leads
-    } else if (period === 'week') {
-      const weekData = sumByDateRange(
-        agent.id,
-        allRows,
-        dateToISO(weekStart),
-        dateToISO(weekEnd)
-      )
-      periodAttempts = weekData.attempts
-      periodLeads = weekData.leads
-    } else {
-      periodAttempts = allStats.totalAttempts
-      periodLeads = allStats.totalLeads
-    }
+    // Compute week stats (for all views, to have consistent data)
+    const weekData = sumByDateRange(
+      agent.id,
+      allRows,
+      dateToISO(weekStart),
+      dateToISO(weekEnd)
+    )
 
     return {
       ...allStats,
       rank: 0, // will be assigned after sorting
-      todayAttempts: 0, // populated if needed
-      todayLeads: 0,
-      weekAttempts: allStats.currentWeekAttempts,
-      weekLeads: 0, // computed separately if needed
+      todayAttempts: todayData.attempts,
+      todayLeads: todayData.leads,
+      weekAttempts: weekData.attempts,
+      weekLeads: weekData.leads,
       sprintAttempts: allStats.totalAttempts,
       sprintLeads: allStats.totalLeads,
     }
