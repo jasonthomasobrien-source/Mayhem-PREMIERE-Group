@@ -26,20 +26,6 @@ export function AgentSearchSelector({
     setSelectedAgent(agent || null)
   }, [agents, selectedAgentId])
 
-  // Restore selected agent from localStorage on mount if not set by props
-  useEffect(() => {
-    if (!selectedAgentId && agents.length > 0) {
-      const savedAgentId = localStorage.getItem('mayhem-selected-agent')
-      if (savedAgentId) {
-        const agent = agents.find((a) => a.id === savedAgentId)
-        if (agent) {
-          setSelectedAgent(agent)
-          onAgentChange(agent.id)
-        }
-      }
-    }
-  }, [])
-
   // Filter agents by substring match
   const filteredAgents = inputValue.trim()
     ? agents.filter((agent) =>
@@ -93,7 +79,6 @@ export function AgentSearchSelector({
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value)
     setIsOpen(true)
-    setSelectedAgent(null)
   }
 
   function handleInputFocus() {
@@ -110,11 +95,7 @@ export function AgentSearchSelector({
         type="text"
         value={selectedAgent && !isOpen ? `${selectedAgent.emoji} ${selectedAgent.name}` : inputValue}
         readOnly={false}
-        onChange={(e) => {
-          if (!(selectedAgent && !isOpen)) {
-            handleInputChange(e)
-          }
-        }}
+        onChange={handleInputChange}
         onFocus={() => {
           if (selectedAgent && !isOpen) {
             handleInputFocus()
@@ -148,7 +129,7 @@ export function AgentSearchSelector({
                     onClick={() => handleSelectAgent(agent)}
                     className="w-full text-left px-4 py-3 hover:bg-brand-muted/10 transition-colors text-white flex items-center gap-2"
                   >
-                    <span>{agent.emoji}</span>
+                    <span>{agent.emoji || '👤'}</span>
                     <span>{agent.name}</span>
                   </button>
                 </li>
