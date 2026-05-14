@@ -8,6 +8,7 @@ import { RecentActivity } from '@/components/RecentActivity'
 import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { computeTeamTotals } from '@/lib/aggregates'
 import { Agent, OutreachRow } from '@/lib/types'
+import { AGENT_STORAGE_KEY } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,7 +32,6 @@ export default function Home() {
         setAgents(agentsData.filter((a) => a.active))
 
         // Restore selected agent from localStorage, or default to first
-        const AGENT_STORAGE_KEY = 'mayhem-selected-agent'
         const savedAgentId = localStorage.getItem(AGENT_STORAGE_KEY)
         if (savedAgentId && agentsData.find((a) => a.id === savedAgentId)) {
           setSelectedAgentId(savedAgentId)
@@ -56,7 +56,7 @@ export default function Home() {
 
   const handleAgentChange = (agentId: string) => {
     setSelectedAgentId(agentId)
-    localStorage.setItem('mayhem-selected-agent', agentId)
+    localStorage.setItem(AGENT_STORAGE_KEY, agentId)
   }
 
   const selectedAgent = agents.find((a) => a.id === selectedAgentId)
