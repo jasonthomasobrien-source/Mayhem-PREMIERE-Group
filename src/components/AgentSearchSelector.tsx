@@ -73,7 +73,6 @@ export function AgentSearchSelector({
     setInputValue('')
     setIsOpen(false)
     onAgentChange(agent.id)
-    localStorage.setItem('mayhem-selected-agent', agent.id)
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
