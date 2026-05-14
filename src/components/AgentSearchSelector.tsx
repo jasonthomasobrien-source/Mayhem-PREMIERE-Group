@@ -98,7 +98,7 @@ export function AgentSearchSelector({
         onChange={handleInputChange}
         onFocus={handleInputFocus}
         placeholder="Type your name"
-        readOnly={selectedAgent && !isOpen}
+        readOnly={!!(selectedAgent && !isOpen)}
         className={`w-full px-4 py-2 rounded-lg border transition-colors ${
           selectedAgent && !isOpen
             ? 'bg-brand-surface border-brand-gold/30 text-white cursor-pointer'
