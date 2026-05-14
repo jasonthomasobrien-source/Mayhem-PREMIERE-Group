@@ -85,3 +85,11 @@ export async function deleteOutreachRecord(recordId: string): Promise<boolean> {
   })
   return res.ok
 }
+
+export async function fetchOutreachDailyAggregates(agentId?: string): Promise<{ date: string; attempts: number; leads: number }[]> {
+  const params = new URLSearchParams({ aggregates: 'true' })
+  if (agentId) params.append('agent_id', agentId)
+  const res = await fetch(`/api/outreach?${params}`)
+  if (!res.ok) throw new Error('Failed to fetch daily aggregates')
+  return res.json()
+}

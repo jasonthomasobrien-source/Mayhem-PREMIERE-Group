@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server'
-import { fetchOutreach as dbFetchOutreach, insertOutreach as dbInsertOutreach } from '@/lib/queries'
+import { fetchOutreach as dbFetchOutreach, insertOutreach as dbInsertOutreach, getOutreachDailyAggregates } from '@/lib/queries'
 import { OutreachRow } from '@/lib/types'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url)
+    const agentId = url.searchParams.get('agent_id')
+    const isAggregates = url.searchParams.get('aggregates') === 'true'
+
+    if (isAggregates) {
+      const aggregates = await getOutreachDailyAggregates(agentId || undefined)
+      return NextResponse.json(aggregates)
+    }
+
     const outreach = await dbFetchOutreach()
     return NextResponse.json(outreach)
   } catch (error) {

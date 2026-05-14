@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchAgents, fetchOutreach } from '@/lib/queries'
+import { fetchAgents, fetchOutreach } from '@/lib/client-queries'
 import { subscribeToOutreach } from '@/lib/realtime'
 import { Agent, OutreachRow } from '@/lib/types'
 import { LoadingSpinner } from './LoadingSpinner'
